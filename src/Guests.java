@@ -4,7 +4,6 @@ public class Guests {
     private String fullName;
     private int mellicode;
     private String phoneNumber;
-    private int roomNumber;
 
     public String getFullName() {
         return fullName;
