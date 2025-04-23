@@ -1,41 +1,42 @@
 package Common;
 
 public class Room {
-	private int RoomNumber;
-	private String Status;
-	private String GuestsName;
-	private String Bed;
+    private int roomNumber;
+    private int capacity;
+    private double pricePerNight;
 
-	
-	public String getBed() {
-	    return Bed;  // تبدیل عدد به رشته و افزودن " Bed"
-	}
+    public Room(int roomNumber, int capacity, double pricePerNight) {
+        this.roomNumber = roomNumber;
+        this.capacity = capacity;
+        this.pricePerNight = pricePerNight;
+    }
 
-	public void setBed(String bed) {
-	    this.Bed = bed;
-	}
+    public int getRoomNumber() {
+        return roomNumber;
+    }
 
-	public int getRoomNumber() {
-		return RoomNumber;
-	}
-	public void setRoomNumber(int roomNumber) {
-		RoomNumber = roomNumber;
-	}
-	public String getStatus() {
-		return Status;
-	}
-	public void setStatus(String status) {
-		Status = status;
-	}
-	public String getGuestsName() {
-		return GuestsName;
-	}
-	public void setGuestsName(String guestsName) {
-		GuestsName = guestsName;
-	}
-	
-	
-	
-	
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
+    }
 
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public double getPricePerNight() {
+        return pricePerNight;
+    }
+
+    public void setPricePerNight(double pricePerNight) {
+        this.pricePerNight = pricePerNight;
+    }
+
+    @Override
+    public String toString() {
+        return "Room " + roomNumber + " | Capacity: " + capacity + " | Price/Night: " + pricePerNight + " Toman";
+    }
 }
