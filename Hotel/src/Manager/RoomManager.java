@@ -1,7 +1,7 @@
 package Manager;
 
 import Common.Commons;
-import Common.Room;
+import Common.Room1; // تغییر از Room به Room1
 import txtFileManager.txtfilemanager;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class RoomManager {
     }
 
     // ✅ افزودن یا بروزرسانی اتاق
-    public void saveOrUpdateRoom(Room b) {
+    public void saveOrUpdateRoom(Room1 b) {
         String[] rooms = fn.getArrayFromFile();
         List<String> updatedRooms = new ArrayList<>();
         boolean found = false;
@@ -24,7 +24,7 @@ public class RoomManager {
         for (String line : rooms) {
             if (line.trim().isEmpty()) continue;
 
-            Room existing = Str2Room(line);
+            Room1 existing = Str2Room(line);
             if (existing.getRoomNumber() == b.getRoomNumber()) {
                 // اگر شماره اتاق یکی بود، به‌روزرسانی کن
                 updatedRooms.add(RoomToStr(b));
@@ -48,10 +48,10 @@ public class RoomManager {
         fn.setIntoFile(data.toString().trim());
     }
 
-    // 🔄 تبدیل رشته به Room
-    private Room Str2Room(String s) {
+    // 🔄 تبدیل رشته به Room1
+    private Room1 Str2Room(String s) {
         String[] A = s.split(Commons.Splitter);
-        Room r = new Room();
+        Room1 r = new Room1();
         r.setRoomNumber(Integer.parseInt(A[0]));
         r.setStatus(A[1]);
         r.setGuestsName(A[2]);
@@ -59,8 +59,8 @@ public class RoomManager {
         return r;
     }
 
-    // 🔄 تبدیل Room به رشته ذخیره‌سازی
-    private String RoomToStr(Room b) {
+    // 🔄 تبدیل Room1 به رشته ذخیره‌سازی
+    private String RoomToStr(Room1 b) {
         return b.getRoomNumber() + Commons.Splitter +
                b.getStatus() + Commons.Splitter +
                b.getGuestsName() + Commons.Splitter +
@@ -74,7 +74,7 @@ public class RoomManager {
         for (String room : rooms) {
             if (room.trim().isEmpty()) continue;
 
-            Room r = Str2Room(room);
+            Room1 r = Str2Room(room);
             if (roomNumber == r.getRoomNumber()) continue;
 
             newData += room + "\n";
@@ -89,7 +89,7 @@ public class RoomManager {
         for (String room : rooms) {
             if (room.trim().isEmpty()) continue;
 
-            Room r = Str2Room(room);
+            Room1 r = Str2Room(room);
             if (r.getRoomNumber() == roomNumber) {
                 return "📄 اطلاعات فایل برای اتاق " + roomNumber + ":\n" + RoomToStr(r);
             }
@@ -97,7 +97,7 @@ public class RoomManager {
 
         // اگه داخل فایل نبود ولی جزو 10 اتاق اولیه بود
         if (roomNumber >= 1 && roomNumber <= 10) {
-            Room defaultRoom = new Room();
+            Room1 defaultRoom = new Room1();
             defaultRoom.setRoomNumber(roomNumber);
             defaultRoom.setStatus("موجود");
             defaultRoom.setGuestsName("");
@@ -114,14 +114,15 @@ public class RoomManager {
 
         return "❌ اطلاعاتی برای این اتاق پیدا نشد.";
     }
+
     public String showAllRoomsStatus() {
         String[] rooms = fn.getArrayFromFile();
-        Room[] allRooms = new Room[10]; // از 0 تا 9 برای اتاق 1 تا 10
+        Room1[] allRooms = new Room1[10]; // از 0 تا 9 برای اتاق 1 تا 10
 
         for (String room : rooms) {
             if (room.trim().isEmpty()) continue;
 
-            Room r = Str2Room(room);
+            Room1 r = Str2Room(room);
             int index = r.getRoomNumber() - 1;
             if (index >= 0 && index < 10) {
                 allRooms[index] = r;
@@ -131,11 +132,11 @@ public class RoomManager {
         StringBuilder result = new StringBuilder();
 
         for (int i = 1; i <= 10; i++) {
-            Room r = allRooms[i - 1];
+            Room1 r = allRooms[i - 1];
 
             if (r == null) {
                 // اتاق مقداردهی نشده، پیش‌فرض
-                r = new Room();
+                r = new Room1();
                 r.setRoomNumber(i);
                 r.setStatus("موجود");
                 r.setGuestsName("");
@@ -163,18 +164,18 @@ public class RoomManager {
         return result.toString().trim();
     }
 
- // ⚡ متد مقداردهی اولیه فایل اتاق‌ها
+    // ⚡ متد مقداردهی اولیه فایل اتاق‌ها
     public void initializeRooms() {
         String[] rooms = fn.getArrayFromFile();
         if (rooms.length > 0 && !rooms[0].trim().isEmpty()) {
             return; // اگر فایل خالی نیست، مقداردهی نکن
         }
 
-        List<Room> defaultRooms = new ArrayList<>();
+        List<Room1> defaultRooms = new ArrayList<>();
         for (int i = 1; i <= 10; i++) {
-            Room r = new Room();
+            Room1 r = new Room1();
             r.setRoomNumber(i);
-            r.setStatus("Avalibale");
+            r.setStatus("Available");
             r.setGuestsName(""); // مهمان ندارد
 
             if (i <= 5) {
@@ -189,11 +190,10 @@ public class RoomManager {
         }
 
         StringBuilder sb = new StringBuilder();
-        for (Room r : defaultRooms) {
+        for (Room1 r : defaultRooms) {
             sb.append(RoomToStr(r)).append("\n");
         }
 
         fn.setIntoFile(sb.toString().trim());
     }
-
 }
