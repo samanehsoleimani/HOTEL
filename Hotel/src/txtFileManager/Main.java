@@ -1,197 +1,232 @@
 package txtFileManager;
-
-import Manager.RoomManager;
-import Common.Room1;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.List;
+import Manager.*;
+import Common.*;
 
 public class Main extends JFrame {
 
-    private static final String ERROR_INVALID_ROOM_NUMBER = "شماره اتاق معتبر نیست!";
-    private static final String ERROR_ROOM_NOT_FOUND = "❌ اطلاعاتی برای این اتاق پیدا نشد.";
-    private static final String SUCCESS_SAVE_UPDATE = "اتاق با موفقیت ذخیره یا بروزرسانی شد.";
-    private static final String SUCCESS_DELETE = "اتاق با موفقیت حذف شد.";
-
+    private GuestsManager guestsManager;
     private RoomManager roomManager;
-    private JTextArea textArea;
-    private JTextField roomNumberField, statusField, guestsField, bedField;
+
+    private CardLayout cardLayout;
+    private JPanel cardPanel;
 
     public Main() {
-        roomManager = new RoomManager();  // ساخت یک شی از RoomManager
-        setupUI();
-    }
+        guestsManager = new GuestsManager();
+        roomManager = new RoomManager();
+        RoomManager rm = new RoomManager();
+        rm.initializeRooms(); // فقط یک بار اجرا بشه – مقداردهی اولیه
 
-    // راه‌اندازی رابط کاربری
-    private void setupUI() {
-        setTitle("مدیریت اتاق‌ها");
-        setSize(700, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("سیستم مدیریت هتل");
+        setSize(700, 650);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Layout تنظیم می‌کنیم
-        setLayout(new BorderLayout(10, 10));  // اضافه کردن فاصله بین اجزا
+        // تنظیم CardLayout
+        cardLayout = new CardLayout();
+        cardPanel = new JPanel(cardLayout);
 
-        // ناحیه بالایی برای ورودی‌ها
-        JPanel inputPanel = createInputPanel();
-        // ناحیه دکمه‌ها
-        JPanel buttonPanel = createButtonPanel();
-        // ناحیه نمایش اطلاعات
-        JScrollPane scrollPane = createScrollPane();
+        // اضافه کردن پنل‌ها به CardLayout
+        cardPanel.add(createGuestPanel(), "guestPanel");
+        cardPanel.add(createRoomPanel(), "roomPanel");
 
-        // اضافه کردن کامپوننت‌ها به فریم
-        add(inputPanel, BorderLayout.NORTH);
-        add(buttonPanel, BorderLayout.CENTER);
-        add(scrollPane, BorderLayout.SOUTH);
+        // منوی ناوبری
+        JPanel navigationPanel = createNavigationPanel();
+
+        // پنل ناوبری و کارت‌ها را به فریم اضافه می‌کنیم
+        add(navigationPanel, BorderLayout.NORTH);
+        add(cardPanel, BorderLayout.CENTER);
     }
 
-    // ناحیه ورودی‌های کاربر
-    private JPanel createInputPanel() {
-        JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new GridLayout(5, 2, 10, 10));  // فاصله‌های بیشتری برای فیلدها
-        inputPanel.setBorder(BorderFactory.createTitledBorder("ورودی‌های اتاق"));
+    // ایجاد پنل ناوبری برای تغییر بین کارت‌ها
+    private JPanel createNavigationPanel() {
+        JPanel panel = new JPanel(new FlowLayout());
+        JButton guestButton = new JButton("مدیریت مهمان");
+        JButton roomButton = new JButton("مدیریت اتاق");
 
-        inputPanel.add(new JLabel("شماره اتاق:"));
-        roomNumberField = new JTextField();
-        inputPanel.add(roomNumberField);
+        guestButton.addActionListener(e -> cardLayout.show(cardPanel, "guestPanel"));
+        roomButton.addActionListener(e -> cardLayout.show(cardPanel, "roomPanel"));
+       
+        panel.add(guestButton);
+        panel.add(roomButton);
+       
 
-        inputPanel.add(new JLabel("وضعیت:"));
-        statusField = new JTextField();
-        inputPanel.add(statusField);
-
-        inputPanel.add(new JLabel("نام مهمان:"));
-        guestsField = new JTextField();
-        inputPanel.add(guestsField);
-
-        inputPanel.add(new JLabel("تعداد تخت‌ها:"));
-        bedField = new JTextField();
-        inputPanel.add(bedField);
-
-        return inputPanel;
+        return panel;
     }
 
-    // ناحیه دکمه‌ها
-    private JPanel createButtonPanel() {
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(1, 3, 10, 10));  // تنظیم چیدمان افقی برای دکمه‌ها
-        buttonPanel.setBackground(new Color(240, 240, 240));  // رنگ پس‌زمینه دکمه‌ها
+    private JPanel createGuestPanel() {
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        panel.setBorder(BorderFactory.createTitledBorder("📘 ثبت و نمایش مهمان‌ها"));
 
-        JButton saveButton = new JButton("ذخیره یا بروزرسانی اتاق");
-        JButton deleteButton = new JButton("حذف اتاق");
-        JButton showButton = new JButton("نمایش وضعیت اتاق‌ها");
+        // فرم ورود اطلاعات
+        JPanel formPanel = new JPanel(new GridLayout(4, 2, 10, 10));
+        formPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 10, 15));
 
-        // تنظیم اندازه دکمه‌ها
-        saveButton.setPreferredSize(new Dimension(120, 40));
-        deleteButton.setPreferredSize(new Dimension(120, 40));
-        showButton.setPreferredSize(new Dimension(120, 40));
+        // فیلدهای ورودی
+        JTextField name = new JTextField();
+        JTextField melli = new JTextField();
+        JTextField phone = new JTextField();
+        JTextField room = new JTextField();
 
-        // تغییر رنگ دکمه‌ها
-        saveButton.setBackground(new Color(0, 204, 102));
-        deleteButton.setBackground(new Color(255, 69, 0));
-        showButton.setBackground(new Color(30, 144, 255));
+        // استایل فیلدها
+        Dimension fieldSize = new Dimension(200, 30);
+        Font font = new Font("SansSerif", Font.PLAIN, 14);
 
-        saveButton.setForeground(Color.WHITE);
-        deleteButton.setForeground(Color.WHITE);
-        showButton.setForeground(Color.WHITE);
-
-        saveButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        deleteButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        showButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
-
-        buttonPanel.add(saveButton);
-        buttonPanel.add(deleteButton);
-        buttonPanel.add(showButton);
-
-        addActionListeners(saveButton, deleteButton, showButton);
-
-        return buttonPanel;
-    }
-
-    // ناحیه نمایش اطلاعات
-    private JScrollPane createScrollPane() {
-        textArea = new JTextArea();
-        textArea.setEditable(false);
-        textArea.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        textArea.setLineWrap(true);
-        textArea.setWrapStyleWord(true);
-        textArea.setBackground(new Color(245, 245, 245));  // رنگ پس‌زمینه متن
-
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setPreferredSize(new Dimension(650, 200));  // افزایش اندازه برای نمایش بهتر
-        return scrollPane;
-    }
-
-    // اضافه کردن شنوندگان به دکمه‌ها
-    private void addActionListeners(JButton saveButton, JButton deleteButton, JButton showButton) {
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                saveOrUpdateRoom();
-            }
-        });
-
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deleteRoom();
-            }
-        });
-
-        showButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showAllRoomsStatus();
-            }
-        });
-    }
-
-    // ذخیره یا بروزرسانی اتاق
-    private void saveOrUpdateRoom() {
-        try {
-            int roomNumber = Integer.parseInt(roomNumberField.getText());
-            String status = statusField.getText();
-            String guestsName = guestsField.getText();
-            String bed = bedField.getText();
-
-            Room1 room = new Room1();
-            room.setRoomNumber(roomNumber);
-            room.setStatus(status);
-            room.setGuestsName(guestsName);
-            room.setBed(bed);
-
-            roomManager.saveOrUpdateRoom(room);
-            textArea.setText(SUCCESS_SAVE_UPDATE);
-        } catch (NumberFormatException ex) {
-            textArea.setText(ERROR_INVALID_ROOM_NUMBER);
+        JTextField[] fields = {name, melli, phone, room};
+        for (JTextField f : fields) {
+            f.setPreferredSize(fieldSize);
+            f.setFont(font);
         }
+
+        // افزودن فیلدها به فرم
+        formPanel.add(new JLabel("👤 نام کامل:"));
+        formPanel.add(name);
+        formPanel.add(new JLabel("🆔 کد ملی:"));
+        formPanel.add(melli);
+        formPanel.add(new JLabel("📞 تلفن:"));
+        formPanel.add(phone);
+        formPanel.add(new JLabel("🚪 شماره اتاق:"));
+        formPanel.add(room);
+
+        // دکمه‌ها
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 5));
+        JButton addGuest = new JButton("➕ ثبت مهمان");
+        JButton listGuests = new JButton("📋 لیست مهمان‌ها");
+        buttonPanel.add(addGuest);;
+        buttonPanel.add(listGuests);
+
+        // خروجی
+        JTextArea output = new JTextArea(10, 30);
+        output.setEditable(false);
+        output.setFont(new Font("Monospaced", Font.PLAIN, 13));
+        output.setMargin(new Insets(10, 10, 10, 10));
+        JScrollPane scrollPane = new JScrollPane(output);
+        scrollPane.setBorder(BorderFactory.createTitledBorder("📄 لیست مهمان‌ها"));
+
+        // رویداد ثبت
+        addGuest.addActionListener(e -> {
+            try {
+                Guests g = new Guests();
+                g.setFullName(name.getText().trim());
+                g.setMellicode(Integer.parseInt(melli.getText().trim()));
+                g.setPhoneNumber(phone.getText().trim());
+                g.setRoomNumber(Integer.parseInt(room.getText().trim()));
+
+                guestsManager.insert(g);
+                JOptionPane.showMessageDialog(panel, "✅ مهمان با موفقیت ثبت شد");
+
+                // پاکسازی فیلدها
+                name.setText(""); melli.setText(""); phone.setText(""); room.setText("");
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(panel, "⚠ لطفاً اطلاعات را صحیح وارد کنید", "خطا", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        // رویداد لیست مهمان‌ها
+        listGuests.addActionListener(e -> {
+            output.setText("");
+            String[] data = guestsManager.fn.getArrayFromFile();
+            for (String row : data) {
+                output.append(row + "\n");
+            }
+        });
+
+        // چیدمان نهایی
+        panel.add(formPanel, BorderLayout.NORTH);
+        panel.add(buttonPanel, BorderLayout.CENTER);
+        panel.add(scrollPane, BorderLayout.SOUTH);
+
+        return panel;
     }
 
-    // حذف اتاق
-    private void deleteRoom() {
-        try {
-            int roomNumber = Integer.parseInt(roomNumberField.getText());
-            roomManager.DeleteRoom(roomNumber);
-            textArea.setText(SUCCESS_DELETE);
-        } catch (NumberFormatException ex) {
-            textArea.setText(ERROR_INVALID_ROOM_NUMBER);
+    private JPanel createRoomPanel() {
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createTitledBorder("🏨 مدیریت اتاق‌ها"));
+
+        // فرم اطلاعات اتاق
+        JPanel formPanel = new JPanel(new GridLayout(4, 2, 10, 10));
+        formPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 10, 15));
+
+        // فیلدها
+        JTextField roomNumber = new JTextField();
+        JTextField bed = new JTextField();
+        JTextField guestName = new JTextField();
+        JComboBox<String> statusBox = new JComboBox<>(new String[]{"Available", "Occupied"});
+
+        // تنظیم اندازه و فونت
+        Dimension fieldSize = new Dimension(200, 30);
+        Font font = new Font("SansSerif", Font.PLAIN, 14);
+
+        JTextField[] fields = {roomNumber, bed, guestName};
+        for (JTextField field : fields) {
+            field.setPreferredSize(fieldSize);
+            field.setFont(font);
         }
-    }
+        statusBox.setPreferredSize(fieldSize);
+        statusBox.setFont(font);
 
-    // نمایش وضعیت همه اتاق‌ها
-    private void showAllRoomsStatus() {
-        String allRoomsStatus = roomManager.showAllRoomsStatus();
-        textArea.setText(allRoomsStatus);
+        // اضافه کردن به فرم
+        formPanel.add(new JLabel("🔢 شماره اتاق:"));
+        formPanel.add(roomNumber);
+        formPanel.add(new JLabel("🛏️ تعداد تخت:"));
+        formPanel.add(bed);
+        formPanel.add(new JLabel("👤 نام مهمان:"));
+        formPanel.add(guestName);
+        formPanel.add(new JLabel("📌 وضعیت:"));
+        formPanel.add(statusBox);
+
+        // دکمه‌ها
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 5));
+        JButton addRoom = new JButton("➕ ثبت اتاق");
+        JButton showRooms = new JButton("📋 نمایش اتاق‌ها");
+        buttonPanel.add(addRoom);
+        buttonPanel.add(showRooms);
+
+        // خروجی
+        JTextArea output = new JTextArea(10, 30);
+        output.setEditable(false);
+        output.setFont(new Font("Monospaced", Font.PLAIN, 13));
+        output.setMargin(new Insets(10, 10, 10, 10));
+        JScrollPane scrollPane = new JScrollPane(output);
+        scrollPane.setBorder(BorderFactory.createTitledBorder("📄 وضعیت اتاق‌ها"));
+
+        // رویداد ثبت اتاق
+        addRoom.addActionListener(e -> {
+            try {
+                Room1 r = new Room1();
+                r.setRoomNumber(Integer.parseInt(roomNumber.getText().trim()));
+                r.setBed(bed.getText().trim());
+                r.setGuestsName(guestName.getText().trim());
+                r.setStatus((String) statusBox.getSelectedItem());
+
+                roomManager.saveOrUpdateRoom(r);
+                JOptionPane.showMessageDialog(mainPanel, "✅ اتاق ثبت شد");
+
+                // پاک‌سازی
+                roomNumber.setText("");
+                bed.setText("");
+                guestName.setText("");
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(mainPanel, "❗ لطفاً شماره اتاق را به درستی وارد کنید");
+            }
+        });
+
+        // رویداد نمایش اتاق‌ها
+        showRooms.addActionListener(e -> {
+            output.setText(roomManager.showAllRoomsStatus());
+        });
+
+        // اضافه کردن بخش‌ها به پنل اصلی
+        mainPanel.add(formPanel, BorderLayout.NORTH);
+        mainPanel.add(buttonPanel, BorderLayout.CENTER);
+        mainPanel.add(scrollPane, BorderLayout.SOUTH);
+
+        return mainPanel;
     }
 
     public static void main(String[] args) {
-        // اجرای برنامه
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new Main().setVisible(true);
-            }
-        });
+        SwingUtilities.invokeLater(() -> new Main().setVisible(true));
     }
 }
