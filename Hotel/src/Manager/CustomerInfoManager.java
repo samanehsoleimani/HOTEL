@@ -14,14 +14,14 @@ public class CustomerInfoManager {
     }
 
     public void collectCustomerInfo() {
-        System.out.println("📋 Welcome to Customer Information Registration");
+        System.out.println(" Welcome to Customer Information Registration");
 
         System.out.print("Please enter your name: ");
         String name = scanner.nextLine().trim();
 
         System.out.print("Please enter your room number: ");
         int roomNumber = scanner.nextInt();
-        scanner.nextLine(); // Clear buffer
+        scanner.nextLine();
 
         System.out.print("Please enter your email: ");
         String email = scanner.nextLine().trim();
@@ -37,6 +37,6 @@ public class CustomerInfoManager {
 
         fileManager.AppendRow(info.toString());
 
-        System.out.println("✅ Customer information registered successfully!");
+        System.out.println(" Customer information registered successfully!");
     }
 }
