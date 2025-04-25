@@ -1,0 +1,58 @@
+[Room Booking]
+Guest Name: zahra
+Room Number: 303
+Room Capacity: 3 beds
+Price per Night: 3000000.0 Toman
+Nights: 2
+Total Price: 6000000.0 Toman
+
+[Food Service]
+Guest Name: zahra
+Room Number: 303
+Breakfast foods:  - Total Price: 0.0 Toman
+Lunch foods: Falafel - Total Price: 50000.0 Toman
+Dinner foods:  - Total Price: 0.0 Toman
+Water: Added
+Total Price: 52000.0 Toman
+
+[Room Booking]
+Guest Name: zahra
+Room Number: 101
+Room Capacity: 1 beds
+Price per Night: 1000000.0 Toman
+Nights: 5
+Total Price: 5000000.0 Toman
+
+[Customer Info]
+Name: Zahra | Room Number: 103 | Email: zwrra00@gmail.com | Mobile: 09942849368
+
+[Food Service]
+Guest Name: salar
+Room Number: 301
+Breakfast foods: Halim - Total Price: 65000.0 Toman
+Lunch foods: Spaghetti - Total Price: 120000.0 Toman
+Dinner foods: Soup - Total Price: 35000.0 Toman
+Water: Added
+Total Price: 222000.0 Toman
+Guest Name: .lk,;l,
+Selected Activities: Water Park, Cinema
+Total Cost: 250000.0 Toman
+
+[Room Booking]
+Guest Name: salar
+Room Number: 404
+Room Capacity: 4 beds
+Price per Night: 4000000.0 Toman
+Nights: 2
+Total Price: 8000000.0 Toman
+Guest Name: salar
+Selected Activities: water park
+Total Cost: 150000.0 Toman
+
+[Room Booking]
+Guest Name: salar
+Room Number: 502
+Room Capacity: 5 beds
+Price per Night: 5000000.0 Toman
+Nights: 12
+Total Price: 6.0E7 Toman
