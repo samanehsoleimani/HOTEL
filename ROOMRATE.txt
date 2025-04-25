@@ -1,0 +1,8 @@
+
+[Room Booking]
+Guest Name: DED
+Room Number: 501
+Room Capacity: 5 beds
+Price per Night: 5000000.0 Toman
+Nights: 4
+Total Price: 2.0E7 Toman
