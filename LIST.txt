@@ -59,3 +59,6 @@ Total Price: 6.0E7 Toman
 
 [Customer Info]
 Name: sccd | Room Number: 26584847 | Email: 1651651561dcdc | Mobile: 35253215632
+
+=== Customer Info ===
+Name: rfgdrg | Room Number: 503 | Email: srgsweghsegh | Mobile: 6524155

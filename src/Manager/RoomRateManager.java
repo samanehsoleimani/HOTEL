@@ -33,7 +33,7 @@ public class RoomRateManager {
                 new Room(404, 4, 4000000),
                 new Room(501, 5, 5000000),
                 new Room(502, 5, 5000000),
-                new Room(503, 5, 5000000)
+                new Room(503, 5, 6000000)
         };
     }
 

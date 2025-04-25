@@ -14,29 +14,31 @@ public class CustomerInfoManager {
     }
 
     public void collectCustomerInfo() {
-        System.out.println("📋 Welcome to Customer Information Registration");
+        System.out.println("\n==============================");
+        System.out.println("  Welcome to Customer Registration");
+        System.out.println("==============================\n");
 
-        System.out.print("Please enter your name: ");
+        System.out.print("→ Enter your name: ");
         String name = scanner.nextLine().trim();
 
-        System.out.print("Please enter your room number: ");
+        System.out.print("→ Enter your room number: ");
         int roomNumber = scanner.nextInt();
-        scanner.nextLine(); // Clear buffer
+        scanner.nextLine(); // consume newline
 
-        System.out.print("Please enter your email: ");
+        System.out.print("→ Enter your email: ");
         String email = scanner.nextLine().trim();
 
-        System.out.print("Please enter your mobile number: ");
+        System.out.print("→ Enter your mobile number: ");
         String mobile = scanner.nextLine().trim();
 
         Customer customer = new Customer(name, roomNumber, email, mobile);
 
         StringBuilder info = new StringBuilder();
-        info.append("\n[Customer Info]\n");
+        info.append("\n=== Customer Info ===\n");
         info.append(customer.toString()).append("\n");
 
         fileManager.AppendRow(info.toString());
 
-        System.out.println("✅ Customer information registered successfully!");
+        System.out.println("\n✅ Customer information registered successfully!\n");
     }
 }
