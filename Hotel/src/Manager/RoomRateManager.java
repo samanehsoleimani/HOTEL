@@ -11,7 +11,7 @@ public class RoomRateManager {
 
     public RoomRateManager() {
         scanner = new Scanner(System.in);
-        fileManager = new txtfilemanager("ROOMRATE.txt"); // 🔄 تغییر فایل
+        fileManager = new txtfilemanager("ROOMRATE.txt");
 
         rooms = new Room[] {
                 new Room(101, 1, 1000000),
@@ -55,7 +55,7 @@ public class RoomRateManager {
 
         System.out.print("How many nights will you stay? ");
         int nights = scanner.nextInt();
-        scanner.nextLine(); // Clear buffer
+        scanner.nextLine(); 
 
         double totalPrice = selectedRoom.getPricePerNight() * nights;
 
