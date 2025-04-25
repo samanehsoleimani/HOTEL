@@ -11,7 +11,7 @@ public class RoomRateManager {
 
     public RoomRateManager() {
         scanner = new Scanner(System.in);
-        fileManager = new txtfilemanager("ROOMRATE.txt"); // 🔄 تغییر فایل
+        fileManager = new txtfilemanager("ROOMRATE.txt");
 
         rooms = new Room[] {
                 new Room(101, 1, 1000000),
@@ -55,7 +55,7 @@ public class RoomRateManager {
 
         System.out.print("How many nights will you stay? ");
         int nights = scanner.nextInt();
-        scanner.nextLine(); // Clear buffer
+        scanner.nextLine();
 
         double totalPrice = selectedRoom.getPricePerNight() * nights;
 
@@ -76,7 +76,8 @@ public class RoomRateManager {
 
     public void listAllRooms() {
         System.out.println("📋 Available Rooms:");
-        for (Room room : rooms) {
+        for (int i = 0; i < rooms.length; i++) {
+            Room room = rooms[i];
             System.out.println("Room Number: " + room.getRoomNumber() +
                     " | Capacity: " + room.getCapacity() + " beds" +
                     " | Price/Night: " + room.getPricePerNight() + " Toman");
@@ -84,9 +85,9 @@ public class RoomRateManager {
     }
 
     private Room getRoomByNumber(int number) {
-        for (Room room : rooms) {
-            if (room.getRoomNumber() == number) {
-                return room;
+        for (int i = 0; i < rooms.length; i++) {
+            if (rooms[i].getRoomNumber() == number) {
+                return rooms[i];
             }
         }
         return null;

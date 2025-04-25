@@ -39,6 +39,6 @@ public class CustomerInfoManager {
 
         fileManager.AppendRow(info.toString());
 
-        System.out.println("\n✅ Customer information registered successfully!\n");
+        System.out.println("\n✅information registered successfully!\n");
     }
 }
