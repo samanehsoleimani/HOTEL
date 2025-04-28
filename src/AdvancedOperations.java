@@ -1,5 +1,12 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
 public class AdvancedOperations extends CalculatorOperations {
-    @Override
+    public AdvancedOperations() {
+    }
+
     protected String performOperation(String a, String b) {
         return null;
     }
@@ -11,22 +18,28 @@ public class AdvancedOperations extends CalculatorOperations {
         arr[0] = 1;
         int cA = 1;
 
-        for (int i = 1; i <= e; i++) {
-            int carry = 0;
-            for (int j = 0; j < cA; j++) {
+        int carry;
+        for(int i = 1; i <= e; ++i) {
+            carry = 0;
+
+            for(int j = 0; j < cA; ++j) {
                 int sum = arr[j] * b + carry;
                 arr[j] = sum % 10;
                 carry = sum / 10;
             }
-            while (carry > 0) {
+
+            while(carry > 0) {
                 arr[cA++] = carry % 10;
-                carry = carry / 10;
+                carry /= 10;
             }
         }
+
         StringBuilder result = new StringBuilder();
-        for (int i = cA - 1; i >= 0; i--) {
-            result.append(arr[i]);
+
+        for(carry = cA - 1; carry >= 0; --carry) {
+            result.append(arr[carry]);
         }
+
         return result.toString();
     }
 
@@ -36,23 +49,28 @@ public class AdvancedOperations extends CalculatorOperations {
         arr[0] = 1;
         int cA = 1;
 
-        for (int i = 1; i <= n; i++) {
-            int carry = 0;
-            for (int j = 0; j < cA; j++) {
+        int carry;
+        for(int i = 1; i <= n; ++i) {
+            carry = 0;
+
+            for(int j = 0; j < cA; ++j) {
                 int sum = arr[j] * i + carry;
                 arr[j] = sum % 10;
                 carry = sum / 10;
             }
-            while (carry > 0) {
+
+            while(carry > 0) {
                 arr[cA++] = carry % 10;
-                carry = carry / 10;
+                carry /= 10;
             }
         }
 
         StringBuilder result = new StringBuilder();
-        for (int i = cA - 1; i >= 0; i--) {
-            result.append(arr[i]);
+
+        for(carry = cA - 1; carry >= 0; --carry) {
+            result.append(arr[carry]);
         }
+
         return result.toString();
     }
 }
