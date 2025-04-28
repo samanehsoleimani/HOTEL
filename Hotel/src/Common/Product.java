@@ -1,5 +1,5 @@
 //این خط مشخص می‌کنه که فایلی که الان داخلش هستیم، متعلق به پکیجی (package) به نام common هست
-package common;
+package Common;
 //این خط می‌گه که برنامه قراره از رابط (interface) به نام Serializable استفاده کنه که در پکیج استاندارد java.io قرار داره
 import java.io.Serializable;
 // این کلاس Product طرفیم که خیلی مهمه چون نماینده‌ی هر کالای موجود در انبار هست
